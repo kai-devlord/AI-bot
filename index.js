@@ -21,7 +21,7 @@ class Bot {
   }
 
   async fetchAndAnalyze() {
-    const prices = await this.binance.fetchOHLCV("BTC/USDT", "15m");
+    const prices = await this.binance.fetchOHLCV("ETH/USDT", "1h");
     const bPrices = prices.map((price) => ({
       timestamp: moment(price[0]).format("YYYY-MM-DD HH:mm:ss"),
       open: price[1],
@@ -37,9 +37,9 @@ class Bot {
       )
       .join("\n");
 
-    const input = `Dữ liệu BTC/USDT:\n${formattedData}\n\n
+    const input = `Dữ liệu ETH/USDT:\n${formattedData}\n\n
         Phân tích và đưa ra điểm vào lệnh mua phù hợp.\n\n
-        Trả lời dưới dạng \n B[giá mua] V[số lượng mua(không quá $100)] S[chốt lời 12 - 15% là có thể chốt lời rồi] ví dụ B 118390 V 0.00084 S 135278 
+        Trả lời dưới dạng \n B[giá mua] V[số lượng mua(không quá $100)] S[chốt lời 12 - 15% là có thể chốt lời rồi] ví dụ B118390 V0.00084 S135278 
         định dạng vào lệnh bắt buộc phải ở sau cùng để mình có thể xử lí nó như đầu vào của code
     `;
 
@@ -65,7 +65,7 @@ class Bot {
 
       const analysis = await this.fetchAndAnalyze();
       await this.tele.telegram.sendMessage(this.userChatId, analysis);
-    }, 300000);
+    }, 200000);
 
     this.tele.launch();
     console.log("✅ Bot is running...");
